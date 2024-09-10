@@ -3,7 +3,7 @@ const Especialidad = require('../models/models_especialidades');
 const router = express.Router();
 
 // Obtener todas las especialidades
-router.get('/especialidades', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const especialidades = await Especialidad.findAll();
         res.json(especialidades);
@@ -13,7 +13,7 @@ router.get('/especialidades', async (req, res) => {
 });
 
 // Crear una nueva especialidad
-router.post('/especialidades', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const especialidad = await Especialidad.create(req.body);
         res.status(201).json(especialidad);
@@ -23,7 +23,7 @@ router.post('/especialidades', async (req, res) => {
 });
 
 // Actualizar una especialidad
-router.put('/especialidades/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const especialidad = await Especialidad.findByPk(req.params.id);
         if (especialidad) {
@@ -38,7 +38,7 @@ router.put('/especialidades/:id', async (req, res) => {
 });
 
 // Eliminar una especialidad
-router.delete('/especialidades/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const rowsDeleted = await Especialidad.destroy({ where: { id: req.params.id } });
         if (rowsDeleted) {

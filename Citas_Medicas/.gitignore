@@ -9,15 +9,3 @@ yarn-error.log*
 # Dependency directories
 .pnp
 .pnp.js
-
-# dotenv environment variables file
-.env
-
-# Local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Package lock files (if you want to ignore them)
-package-lock.json

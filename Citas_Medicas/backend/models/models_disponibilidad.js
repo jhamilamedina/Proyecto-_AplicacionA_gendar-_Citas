@@ -1,6 +1,6 @@
 // Modelo (Disponibilidad)
 const { DataTypes, Sequelize } = require('sequelize');
-const sequelize = require('../config/database'); // Asegúrate de que la configuración de la conexión a la base de datos sea correcta
+const sequelize = require('../server'); // Asegúrate de que la configuración de la conexión a la base de datos sea correcta
 
 const disponibilidad = sequelize.define('disponibilidad', {
   id: {

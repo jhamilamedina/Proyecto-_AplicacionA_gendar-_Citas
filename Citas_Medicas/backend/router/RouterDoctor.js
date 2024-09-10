@@ -3,7 +3,7 @@ const Doctor = require('../models/models_doctors');  // Asegúrate de que el mod
 const router = express.Router();
 
 // Obtener todos los doctores
-router.get('/doctores', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const doctores = await Doctor.findAll();
         res.json(doctores);
@@ -13,7 +13,7 @@ router.get('/doctores', async (req, res) => {
 });
 
 // Crear un nuevo doctor
-router.post('/doctores', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const nuevoDoctor = await Doctor.create(req.body);
         res.status(201).json(nuevoDoctor);
@@ -23,7 +23,7 @@ router.post('/doctores', async (req, res) => {
 });
 
 // Actualizar la información de un doctor
-router.put('/doctores/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const doctor = await Doctor.findByPk(req.params.id);
         if (doctor) {
@@ -38,7 +38,7 @@ router.put('/doctores/:id', async (req, res) => {
 });
 
 // Eliminar un doctor
-router.delete('/doctores/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const rowsDeleted = await Doctor.destroy({ where: { id: req.params.id } });
         if (rowsDeleted) {

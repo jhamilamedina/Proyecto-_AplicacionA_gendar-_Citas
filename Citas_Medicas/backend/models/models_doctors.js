@@ -1,6 +1,6 @@
 // Modelo Doctor (Médicos)
 const { DataTypes, Sequelize } = require('sequelize');
-const sequelize = require('../config/database'); // Asegúrate de tener la configuración correcta
+const sequelize = require('../server'); // Asegúrate de tener la configuración correcta
 
 const Doctor = sequelize.define('Doctor', {
   id: {

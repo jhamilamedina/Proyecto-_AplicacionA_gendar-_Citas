@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./config/database');
+const sequelize = require('../server'); // Asegúrate de que esta ruta sea correcta
 
-// Modelo Citas (Citas)
 const Citas = sequelize.define('Citas', {
     id: {
         type: DataTypes.INTEGER,
@@ -33,12 +32,12 @@ const Citas = sequelize.define('Citas', {
         allowNull: true,
     },
     fecha_creacion: {
-        type: DataTypes.TIMESTAMP,
+        type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     }
 }, {
-    tableName: 'Citas', // Nombre de la tabla en la BD
-    timestamps: false,  // Si no quieres que Sequelize añada columnas `createdAt` y `updatedAt`
+    tableName: 'Citas',
+    timestamps: false,
 });
 
 module.exports = Citas;

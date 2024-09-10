@@ -3,7 +3,7 @@ const Paciente = require('../models/models_pacientes');
 const router = express.Router();
 
 // Obtener todos los pacientes
-router.get('/pacientes', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const pacientes = await Paciente.findAll();
         res.json(pacientes);
@@ -13,7 +13,7 @@ router.get('/pacientes', async (req, res) => {
 });
 
 // Crear un nuevo paciente
-router.post('/pacientes', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const paciente = await Paciente.create(req.body);
         res.status(201).json(paciente);
@@ -23,7 +23,7 @@ router.post('/pacientes', async (req, res) => {
 });
 
 // Actualizar un paciente
-router.put('/pacientes/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const paciente = await Paciente.findByPk(req.params.id);
         if (paciente) {
@@ -38,7 +38,7 @@ router.put('/pacientes/:id', async (req, res) => {
 });
 
 // Eliminar un paciente
-router.delete('/pacientes/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const rowsDeleted = await Paciente.destroy({ where: { id: req.params.id } });
         if (rowsDeleted) {

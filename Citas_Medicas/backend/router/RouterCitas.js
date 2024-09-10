@@ -3,7 +3,7 @@ const Citas = require('../models/models_Cita');
 const router = express.Router();
 
 // Obtener todas las citas
-router.get('/citas', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const citas = await Citas.findAll();
         res.json(citas);
@@ -13,7 +13,7 @@ router.get('/citas', async (req, res) => {
 });
 
 // Crear una nueva cita
-router.post('/citas', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const cita = await Citas.create(req.body);
         res.status(201).json(cita);
@@ -23,7 +23,7 @@ router.post('/citas', async (req, res) => {
 });
 
 // Obtener una cita específica
-router.get('/citas/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const cita = await Citas.findByPk(req.params.id);
         if (cita) {
@@ -37,7 +37,7 @@ router.get('/citas/:id', async (req, res) => {
 });
 
 // Actualizar una cita
-router.put('/citas/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const cita = await Citas.findByPk(req.params.id);
         if (cita) {
@@ -52,7 +52,7 @@ router.put('/citas/:id', async (req, res) => {
 });
 
 // Eliminar una cita
-router.delete('/citas/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const rowsDeleted = await Citas.destroy({ where: { id: req.params.id } });
         if (rowsDeleted) {
