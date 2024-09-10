@@ -20,6 +20,7 @@ const disponibilidadRouter = require('./router/RouterDisponibilidad');
 const doctoresRouter = require('./router/RouterDoctor');
 const especialidadesRouter = require('./router/RouterEspecialidades');
 const pacientesRouter = require('./router/RouterPacientes');
+const usuarioRouter = require('./router/RouterUsuarios');
 
 
 const app = express();
@@ -40,6 +41,7 @@ app.use('/api/disponibilidad', disponibilidadRouter);
 app.use('/api/especialidades', especialidadesRouter);
 app.use('/api/pacientes', pacientesRouter);
 app.use('/api/doctores', doctoresRouter);
+app.use('/api/usuarios', usuarioRouter)
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {

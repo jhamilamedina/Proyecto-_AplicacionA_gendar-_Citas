@@ -1,4 +1,7 @@
 // Modelo (Usuarios)
+const { DataTypes } = require('sequelize');
+const sequelize = require('../server'); // Asegúrate de tener la configuración correcta
+
 const Usuario = sequelize.define('Usuario', {
   id: {
       type: DataTypes.INTEGER,
@@ -24,19 +27,12 @@ const Usuario = sequelize.define('Usuario', {
       defaultValue: 'usuario',
   },
   fecha_creacion: {
-      type: DataTypes.TIMESTAMP,
+      type: DataTypes.DATE, // Cambia a DATE si TIMESTAMP causa problemas
       defaultValue: DataTypes.NOW,
   }
 }, {
   tableName: 'usuarios',
   timestamps: false,
 });
-
-// Relaciones
-Citas.belongsTo(Doctor, { foreignKey: 'doctor_id' });
-Citas.belongsTo(Paciente, { foreignKey: 'patient_id' });
-Doctor.belongsTo(Especialidad, { foreignKey: 'specialty_id' });
-Paciente.belongsTo(Usuario, { foreignKey: 'user_id' });
-Doctor.belongsTo(Usuario, { foreignKey: 'user_id' });
 
 module.exports = Usuario;
