@@ -1,0 +1,197 @@
+body {
+  background-color:#ddd
+}
+/* Contenedor de la tabla */
+.citas-container {
+  padding: 20px;
+}
+
+/* Estilos de la tabla */
+.citas-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Estilo de las celdas de la tabla */
+.citas-table {
+  width: 100%;
+  border-collapse: collapse; /* Elimina el espacio entre bordes */
+  margin-top: 20px;
+  font-family: Arial, sans-serif; /* Establece una fuente más profesional */
+}
+
+.citas-table th, .citas-table td {
+  padding: 12px; /* Aumenta el espacio interior para una mejor legibilidad */
+  border: 1px solid #ddd; /* Color de borde más suave */
+  text-align: left; /* Alineación del texto a la izquierda */
+}
+
+.citas-table thead {
+  background-color: #678cb4; /* Fondo azul para el encabezado */
+  color: rgb(12, 1, 1); /* Color del texto del encabezado */
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.citas-table th {
+  font-weight: bold; /* Acentúa el texto del encabezado */
+}
+
+.citas-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Color de fondo alternado para las filas */
+}
+
+.citas-table tbody tr:hover {
+  background-color: #e9ecef; /* Color de fondo al pasar el cursor */
+}
+
+.citas-table td {
+  font-size: 14px; /* Tamaño de fuente más pequeño para celdas */
+}
+
+/* Estilos para los botones de acción en columna */
+.citas-table .action-buttons {
+  display: flex; /* Asegura que los botones estén en una columna */
+  flex-direction: column; /* Cambia la dirección a columna */
+  gap: 5px; /* Espacio entre los botones */
+}
+
+.editar-btn {
+  background-color: #ffc107;
+  border: none;
+  padding: 5px 8px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 12px; /* Tamaño de fuente más pequeño */
+  text-align: center;
+  display: inline-block; /* Asegura que el botón sea un bloque en línea */
+}
+.editar-btn1 {
+  background-color: #ff3d07;
+  border: none;
+  padding: 5px 8px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 12px; /* Tamaño de fuente más pequeño */
+  text-align: center;
+  display: inline-block; /* Asegura que el botón sea un bloque en línea */
+}
+
+/* Estilos adicionales para el botón Agregar cita */
+.agregar-cita {
+  margin-bottom: 20px;
+  padding: 12px 20px; /* Ajustado para hacer el botón más pequeño */
+  background-color: #217735;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px; /* Tamaño de fuente más pequeño */
+  text-align: center; /* Asegura que el texto esté centrado */
+  display: inline-block; /* Asegura que el botón tenga solo el ancho necesario */
+  width: auto; /* Ajusta el ancho al contenido */
+  min-width: 100px; /* Ajusta el ancho mínimo para que el botón no sea demasiado pequeño */
+  float: left;
+}
+
+.agregar-cita:hover {
+  background-color: #0c7307;
+}
+
+.buscador {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%; /* Ajusta el ancho al contenedor */
+  max-width: 400px; /* Ajusta el ancho máximo según tus necesidades */
+  font-size: 14px; /* Tamaño de fuente más pequeño */
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal label {
+  margin-bottom: 10px;
+}
+
+.modal input,
+.modal select {
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #0056b3;
+}
+
+.paciente-busqueda {
+  border: 1px solid #ddd;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.paciente-busqueda div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.paciente-busqueda div:hover {
+  background-color: #f0f0f0;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+

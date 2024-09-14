@@ -22,10 +22,6 @@ const doctoresRouter = require('./router/RouterDoctor');
 const especialidadesRouter = require('./router/RouterEspecialidades');
 const pacientesRouter = require('./router/RouterPacientes');
 const usuarioRouter = require('./router/RouterUsuarios');
-const authRouter = require('./router/authRouter');
-
-// Middlewares
-const { authMiddleware, adminMiddleware } = require('./middleware/authMiddleware');  // Corregido el path del middleware
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -34,19 +30,18 @@ const PORT = process.env.PORT || 5001;
 app.use(cors({
     origin: ['http://localhost:3000', 'http://example.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type']
 }));
 app.use(helmet());
 app.use(express.json());
 
 // Rutas
-app.use('/api/auth', authRouter);  // Ruta pública para autenticación (login y registro)
-app.use('/api/citas', authMiddleware, citasRouter);  // Ruta protegida para citas
-app.use('/api/disponibilidad', authMiddleware, disponibilidadRouter);  // Ruta protegida para disponibilidad
-app.use('/api/especialidades', authMiddleware, especialidadesRouter);  // Ruta protegida para especialidades
-app.use('/api/pacientes', authMiddleware, pacientesRouter);  // Ruta protegida para pacientes
-app.use('/api/doctores', authMiddleware, adminMiddleware, doctoresRouter);  // Ruta protegida y con autorización de admin para doctores
-app.use('/api/usuarios', authMiddleware, adminMiddleware, usuarioRouter);  // Ruta protegida y con autorización de admin para usuarios
+app.use('/api/citas', citasRouter);  // Ruta pública para citas
+app.use('/api/disponibilidad', disponibilidadRouter);  // Ruta pública para disponibilidad
+app.use('/api/especialidades', especialidadesRouter);  // Ruta pública para especialidades
+app.use('/api/pacientes', pacientesRouter);  // Ruta pública para pacientes
+app.use('/api/doctores', doctoresRouter);  // Ruta pública para doctores
+app.use('/api/usuarios', usuarioRouter);  // Ruta pública para usuarios
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {

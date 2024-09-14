@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const Usuario = require('../models/models_usuarios');
 const router = express.Router();
 
@@ -62,6 +63,33 @@ router.delete('/:id', async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+// Ruta para iniciar sesión
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Buscar al usuario por el email
+        const usuario = await Usuario.findOne({ where: { email } });
+
+        if (!usuario) {
+            return res.status(401).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Verificar la contraseña
+        const isMatch = await bcrypt.compare(password, usuario.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Contraseña incorrecta' });
+        }
+
+        // Autenticación exitosa
+        res.status(200).json({ message: 'Inicio de sesión exitoso', role: usuario.role });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error del servidor' });
     }
 });
 

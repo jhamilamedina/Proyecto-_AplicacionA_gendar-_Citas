@@ -1,0 +1,27 @@
+.circular-button {
+  display: flex;
+  flex-direction: column; /* Para colocar la imagen y el texto en una columna */
+  justify-content: center;
+  align-items: center;
+  width: 270px; /* Ajusta el tamaño del botón según sea necesario */
+  height: 250px; /* Asegura espacio suficiente para la imagen y el texto */
+  border-radius: 50%; /* Forma circular */
+  background-color: #c4d4f5; /* Fondo del botón */
+  overflow: hidden; /* Asegura que la imagen se ajuste al botón circular */
+  text-decoration: none;
+}
+
+.button-image {
+  width: 99%;
+  height: 100px; /* Ajusta el tamaño de la imagen según sea necesario */
+  object-fit: cover; /* Ajusta la imagen para que cubra el contenedor */
+}
+
+.button-label {
+  margin-top: 10px; /* Espacio entre la imagen y el texto */
+  font-size: 20px; /* Tamaño de la fuente del texto */
+  color: #140a0a; /* Color del texto */
+  text-align: center;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  width: 100%; /* Asegura que el texto esté centrado en el contenedor */
+}
