@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './CitasMedicas.css'; // Asegúrate de tener tus estilos
+import ReactPaginate from 'react-paginate'; // Importar el componente de paginación
+import './CitasMedicas.css';
 
 const CitasMedicas = () => {
   const [citas, setCitas] = useState([]);
   const [pacientes, setPacientes] = useState([]);
   const [doctores, setDoctores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [modalOpen, setModalOpen] = useState(false); // Estado para manejar el modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false); // Modal para editar
+  const [citaSeleccionada, setCitaSeleccionada] = useState(null); // Cita a editar
   const [nuevaCita, setNuevaCita] = useState({
     fecha_cita: '',
     hora_cita: '',
@@ -16,32 +19,31 @@ const CitasMedicas = () => {
     status: '',
     razon: ''
   });
+  const [currentPage, setCurrentPage] = useState(0);
+  const citasPerPage = 5;
 
   useEffect(() => {
-    // Llamada a la API para obtener las citas
     const fetchCitas = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/citas'); // Ajusta la URL según tu configuración
+        const response = await axios.get('http://localhost:5001/api/citas');
         setCitas(response.data);
       } catch (error) {
         console.error('Error al obtener las citas:', error);
       }
     };
 
-    // Llamada a la API para obtener los pacientes
     const fetchPacientes = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/pacientes'); // Ajusta la URL según tu configuración
+        const response = await axios.get('http://localhost:5001/api/pacientes');
         setPacientes(response.data);
       } catch (error) {
         console.error('Error al obtener los pacientes:', error);
       }
     };
 
-    // Llamada a la API para obtener los doctores
     const fetchDoctores = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/doctores'); // Ajusta la URL según tu configuración
+        const response = await axios.get('http://localhost:5001/api/doctores');
         setDoctores(response.data);
       } catch (error) {
         console.error('Error al obtener los doctores:', error);
@@ -53,7 +55,6 @@ const CitasMedicas = () => {
     fetchDoctores();
   }, []);
 
-  // Crear mapas de ID a nombre para pacientes y doctores
   const pacienteMap = pacientes.reduce((map, paciente) => {
     map[paciente.id] = `${paciente.nombre} ${paciente.apellido}`;
     return map;
@@ -64,30 +65,34 @@ const CitasMedicas = () => {
     return map;
   }, {});
 
-  // Manejar el cambio en el campo de búsqueda
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
-  // Filtrar citas basado en el término de búsqueda
   const filteredCitas = citas.filter(cita => {
     const pacienteNombre = pacienteMap[cita.patient_id]?.toLowerCase() || '';
     const doctorNombre = doctorMap[cita.doctor_id]?.toLowerCase() || '';
     return pacienteNombre.includes(searchTerm) || doctorNombre.includes(searchTerm);
   });
 
-  // Manejar el cambio en los campos del formulario
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
+
+  const startIndex = currentPage * citasPerPage;
+  const endIndex = startIndex + citasPerPage;
+  const currentCitas = filteredCitas.slice(startIndex, endIndex);
+
   const handleChange = (e) => {
     setNuevaCita({ ...nuevaCita, [e.target.name]: e.target.value });
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5001/api/citas', nuevaCita); // Ajusta la URL según tu configuración
-      setCitas([...citas, nuevaCita]); // Actualizar el estado local con la nueva cita
-      setModalOpen(false); // Cerrar el modal
+      await axios.post('http://localhost:5001/api/citas', nuevaCita);
+      setCitas([...citas, nuevaCita]);
+      setModalOpen(false);
       setNuevaCita({
         fecha_cita: '',
         hora_cita: '',
@@ -95,15 +100,48 @@ const CitasMedicas = () => {
         doctor_id: '',
         status: '',
         razon: ''
-      }); // Limpiar el formulario
+      });
     } catch (error) {
       console.error('Error al agregar la cita:', error);
     }
   };
 
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta cita?');
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:5001/api/citas/${id}`);
+        setCitas(citas.filter(cita => cita.id !== id));
+      } catch (error) {
+        console.error('Error al eliminar la cita:', error);
+      }
+    }
+  };
+
+  const handleEditClick = (cita) => {
+    setCitaSeleccionada(cita);
+    setEditModalOpen(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:5001/api/citas/${citaSeleccionada.id}`, citaSeleccionada);
+      setCitas(citas.map(cita => (cita.id === citaSeleccionada.id ? citaSeleccionada : cita)));
+      setEditModalOpen(false);
+      setCitaSeleccionada(null);
+    } catch (error) {
+      console.error('Error al editar la cita:', error);
+    }
+  };
+
+  const handleEditChange = (e) => {
+    setCitaSeleccionada({ ...citaSeleccionada, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="citas-container">
-      <h1>Lista de Citas</h1>
+      <h1>Citas Médicas</h1>
       <button className="agregar-cita" onClick={() => setModalOpen(true)}>Agregar cita</button>
       <div className="buscador">
         <input
@@ -118,17 +156,17 @@ const CitasMedicas = () => {
         <thead>
           <tr>
             <th>N° Cita</th>
-            <th>Fecha_Cita</th>
+            <th>Fecha Cita</th>
             <th>Hora</th>
             <th>Paciente</th>
             <th>Doctor</th>
             <th>Estado</th>
-            <th>Razón</th> {/* Nueva columna para Razón */}
+            <th>Razón</th>
             <th>Acción</th>
           </tr>
         </thead>
         <tbody>
-          {filteredCitas.map((cita) => (
+          {currentCitas.map((cita) => (
             <tr key={cita.id}>
               <td>{cita.id}</td>
               <td>{cita.fecha_cita}</td>
@@ -136,11 +174,11 @@ const CitasMedicas = () => {
               <td>{pacienteMap[cita.patient_id] || 'Desconocido'}</td>
               <td>{doctorMap[cita.doctor_id] || 'Desconocido'}</td>
               <td>{cita.status}</td>
-              <td>{cita.razon || 'No especificado'}</td> {/* Nueva celda para Razón */}
+              <td>{cita.razon || 'No especificado'}</td>
               <td>
                 <div className="action-buttons">
-                  <button className="editar-btn">Editar</button>
-                  <button className="editar-btn1">Eliminar</button>
+                  <button className="editar-btn" onClick={() => handleEditClick(cita)}>Editar</button>
+                  <button className="eliminar-btn" onClick={() => handleDelete(cita.id)}>Eliminar</button>
                 </div>
               </td>
             </tr>
@@ -148,6 +186,19 @@ const CitasMedicas = () => {
         </tbody>
       </table>
 
+      <ReactPaginate
+        previousLabel={'Anterior'}
+        nextLabel={'Siguiente'}
+        breakLabel={'...'}
+        pageCount={Math.ceil(filteredCitas.length / citasPerPage)}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
+
+      {/* Modal para Agregar Cita */}
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
@@ -208,25 +259,110 @@ const CitasMedicas = () => {
               </label>
               <label>
                 Estado:
-                <input
-                  type="text"
+                <select
                   name="status"
                   value={nuevaCita.status}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="pendiente">Pendiente</option>
+                  <option value="completada">Completada</option>
+                  <option value="cancelada">Cancelada</option>
+                </select>
               </label>
               <label>
                 Razón:
-                <input
-                  type="text"
+                <textarea
                   name="razon"
                   value={nuevaCita.razon}
                   onChange={handleChange}
+                />
+              </label>
+              <button type="submit">Agregar Cita</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para Editar Cita */}
+      {editModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setEditModalOpen(false)}>&times;</span>
+            <h2>Editar Cita</h2>
+            <form onSubmit={handleEditSubmit}>
+              <label>
+                Fecha Cita:
+                <input
+                  type="date"
+                  name="fecha_cita"
+                  value={citaSeleccionada.fecha_cita}
+                  onChange={handleEditChange}
                   required
                 />
               </label>
-              <button type="submit">Guardar Cita</button>
+              <label>
+                Hora:
+                <input
+                  type="time"
+                  name="hora_cita"
+                  value={citaSeleccionada.hora_cita}
+                  onChange={handleEditChange}
+                  required
+                />
+              </label>
+              <label>
+                Paciente:
+                <select
+                  name="patient_id"
+                  value={citaSeleccionada.patient_id}
+                  onChange={handleEditChange}
+                  required
+                >
+                  {pacientes.map((paciente) => (
+                    <option key={paciente.id} value={paciente.id}>
+                      {paciente.nombre} {paciente.apellido}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Doctor:
+                <select
+                  name="doctor_id"
+                  value={citaSeleccionada.doctor_id}
+                  onChange={handleEditChange}
+                  required
+                >
+                  {doctores.map((doctor) => (
+                    <option key={doctor.id} value={doctor.id}>
+                      {doctor.first_name} {doctor.last_name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Estado:
+                <select
+                  name="status"
+                  value={citaSeleccionada.status}
+                  onChange={handleEditChange}
+                  required
+                >
+                  <option value="pendiente">Pendiente</option>
+                  <option value="completada">Completada</option>
+                  <option value="cancelada">Cancelada</option>
+                </select>
+              </label>
+              <label>
+                Razón:
+                <textarea
+                  name="razon"
+                  value={citaSeleccionada.razon}
+                  onChange={handleEditChange}
+                />
+              </label>
+              <button type="submit">Guardar Cambios</button>
             </form>
           </div>
         </div>

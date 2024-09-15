@@ -195,3 +195,26 @@ body {
   margin-top: 10px;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.pagination .active a {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
