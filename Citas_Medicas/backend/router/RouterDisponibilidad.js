@@ -1,5 +1,5 @@
 const express = require('express');
-const Disponibilidad = require('../models/models_disponibilidad');  // Asegúrate de que el modelo Disponibilidad está definido
+const Disponibilidad = require('../models/models_disponibilidad');
 const router = express.Router();
 
 // Obtener todas las disponibilidades
@@ -14,13 +14,34 @@ router.get('/', async (req, res) => {
 
 // Crear una nueva disponibilidad
 router.post('/', async (req, res) => {
-    try {
-        const disponibilidad = await Disponibilidad.create(req.body);
-        res.status(201).json(disponibilidad);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+    const { doctor_id, dia_de_semana, horario_inicio, horario_final } = req.body;
+  
+    // Verificar los datos que llegan al backend
+    console.log('Datos recibidos:', req.body);
+  
+    // Validar que todos los campos necesarios estén presentes
+    if (!doctor_id || !dia_de_semana || !horario_inicio || !horario_final) {
+        return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
-});
+  
+    try {
+        const newDisponibilidad = await Disponibilidad.create({
+            doctor_id,
+            dia_de_semana,
+            horario_inicio,
+            horario_final,
+            fecha_creacion: new Date()
+        });
+  
+        // Verificar la creación de la nueva disponibilidad
+        console.log('Nueva disponibilidad creada:', newDisponibilidad);
+  
+        res.status(201).json(newDisponibilidad);
+    } catch (error) {
+        console.error('Error al crear disponibilidad:', error);
+        res.status(500).json({ error: 'Error al agregar el horario' });
+    }
+});  
 
 // Obtener una disponibilidad específica por ID
 router.get('/:id', async (req, res) => {

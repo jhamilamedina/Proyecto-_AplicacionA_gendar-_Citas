@@ -6,7 +6,7 @@
   width: 270px; /* Ajusta el tamaño del botón según sea necesario */
   height: 250px; /* Asegura espacio suficiente para la imagen y el texto */
   border-radius: 50%; /* Forma circular */
-  background-color: #c4d4f5; /* Fondo del botón */
+  background-color: #e9ebef; /* Fondo del botón */
   overflow: hidden; /* Asegura que la imagen se ajuste al botón circular */
   text-decoration: none;
 }

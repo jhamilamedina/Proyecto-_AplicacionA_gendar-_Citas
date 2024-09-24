@@ -89,9 +89,11 @@ const CitasMedicas = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Datos de la nueva cita:', nuevaCita); // Verifica los datos a enviar
     try {
-      await axios.post('http://localhost:5001/api/citas', nuevaCita);
-      setCitas([...citas, nuevaCita]);
+      const response = await axios.post('http://localhost:5001/api/citas', nuevaCita);
+      console.log('Cita agregada:', response.data); // Verifica la respuesta
+      setCitas([...citas, response.data]); // Usa response.data para actualizar la lista
       setModalOpen(false);
       setNuevaCita({
         fecha_cita: '',
@@ -259,33 +261,32 @@ const CitasMedicas = () => {
               </label>
               <label>
                 Estado:
-                <select
+                <input
+                  type="text"
                   name="status"
                   value={nuevaCita.status}
                   onChange={handleChange}
                   required
-                >
-                  <option value="pendiente">Pendiente</option>
-                  <option value="completada">Completada</option>
-                  <option value="cancelada">Cancelada</option>
-                </select>
+                />
               </label>
               <label>
                 Razón:
-                <textarea
+                <input
+                  type="text"
                   name="razon"
                   value={nuevaCita.razon}
                   onChange={handleChange}
+                  required
                 />
               </label>
-              <button type="submit">Agregar Cita</button>
+              <button type="submit">Agregar</button>
             </form>
           </div>
         </div>
       )}
 
       {/* Modal para Editar Cita */}
-      {editModalOpen && (
+      {editModalOpen && citaSeleccionada && (
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => setEditModalOpen(false)}>&times;</span>
@@ -319,6 +320,7 @@ const CitasMedicas = () => {
                   onChange={handleEditChange}
                   required
                 >
+                  <option value="">Selecciona un paciente</option>
                   {pacientes.map((paciente) => (
                     <option key={paciente.id} value={paciente.id}>
                       {paciente.nombre} {paciente.apellido}
@@ -334,6 +336,7 @@ const CitasMedicas = () => {
                   onChange={handleEditChange}
                   required
                 >
+                  <option value="">Selecciona un doctor</option>
                   {doctores.map((doctor) => (
                     <option key={doctor.id} value={doctor.id}>
                       {doctor.first_name} {doctor.last_name}
@@ -343,26 +346,25 @@ const CitasMedicas = () => {
               </label>
               <label>
                 Estado:
-                <select
+                <input
+                  type="text"
                   name="status"
                   value={citaSeleccionada.status}
                   onChange={handleEditChange}
                   required
-                >
-                  <option value="pendiente">Pendiente</option>
-                  <option value="completada">Completada</option>
-                  <option value="cancelada">Cancelada</option>
-                </select>
+                />
               </label>
               <label>
                 Razón:
-                <textarea
+                <input
+                  type="text"
                   name="razon"
                   value={citaSeleccionada.razon}
                   onChange={handleEditChange}
+                  required
                 />
               </label>
-              <button type="submit">Guardar Cambios</button>
+              <button type="submit">Guardar cambios</button>
             </form>
           </div>
         </div>

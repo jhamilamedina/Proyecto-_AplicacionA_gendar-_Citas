@@ -1,7 +1,7 @@
 import React from 'react';
 import CircularButton from './CircularButton';
 import UserProfile from './UserProfile';
-import './Dashboard.css'; 
+import './DashboardUser.css'; 
 
 const Dashboard = () => {
     return (
@@ -15,9 +15,7 @@ const Dashboard = () => {
                 <CircularButton imageSrc="/imagen3.jpg" altText="Pacientes" to="/pacientes" label="Pacientes" />
                 <CircularButton imageSrc="/imagen4.jpg" altText="Horarios" to="/horarios" label="Horarios de Atención" />
                 <CircularButton imageSrc="/imagen5.jpg" altText="Doctores" to="/doctores" label="Doctores" />
-                <CircularButton imageSrc="/imagen6.jpg" altText="Usuarios" to="/usuarios" label="Usuarios" /> {/* Nuevo botón */}
             </div>
-            
         </div>
     );
 };

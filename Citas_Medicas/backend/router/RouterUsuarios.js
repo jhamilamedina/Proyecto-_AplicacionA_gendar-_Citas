@@ -27,10 +27,23 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Crear un nuevo usuario
+// Crear un nuevo usuario (Registro)
 router.post('/', async (req, res) => {
+    const { username, password, email, role } = req.body;
+
     try {
-        const usuario = await Usuario.create(req.body);
+        // Generar un hash para la contraseña
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Crear el usuario con la contraseña encriptada
+        const usuario = await Usuario.create({
+            username,
+            password: hashedPassword, // Guardar la contraseña encriptada
+            email,
+            role
+        });
+
         res.status(201).json(usuario);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -66,7 +79,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// Ruta para iniciar sesión
+// Ruta para iniciar sesión (Login)
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -78,15 +91,22 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Usuario no encontrado' });
         }
 
-        // Verificar la contraseña
+        // Verificar la contraseña encriptada
         const isMatch = await bcrypt.compare(password, usuario.password);
 
         if (!isMatch) {
             return res.status(401).json({ error: 'Contraseña incorrecta' });
         }
 
-        // Autenticación exitosa
-        res.status(200).json({ message: 'Inicio de sesión exitoso', role: usuario.role });
+        // Autenticación exitosa, devolver todos los datos relevantes del usuario
+        res.status(200).json({
+            id: usuario.id,
+            username: usuario.username,
+            email: usuario.email,
+            role: usuario.role,
+            fecha_creacion: usuario.fecha_creacion
+        });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error del servidor' });

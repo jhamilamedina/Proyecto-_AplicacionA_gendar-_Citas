@@ -16,6 +16,7 @@ const Especialidades = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const especialidadesPerPage = 5;
 
+  // Obtener las especialidades desde el backend
   useEffect(() => {
     const fetchEspecialidades = async () => {
       try {
@@ -29,6 +30,7 @@ const Especialidades = () => {
     fetchEspecialidades();
   }, []);
 
+  // Filtrar especialidades basadas en el término de búsqueda
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
@@ -37,6 +39,7 @@ const Especialidades = () => {
     especialidad.name && especialidad.name.toLowerCase().includes(searchTerm)
   );
 
+  // Manejar la paginación
   const handlePageClick = (data) => {
     setCurrentPage(data.selected);
   };
@@ -45,15 +48,16 @@ const Especialidades = () => {
   const endIndex = startIndex + especialidadesPerPage;
   const currentEspecialidades = filteredEspecialidades.slice(startIndex, endIndex);
 
+  // Manejar los cambios de nueva especialidad
   const handleChange = (e) => {
     setNuevaEspecialidad({ ...nuevaEspecialidad, [e.target.name]: e.target.value });
   };
 
+  // Enviar una nueva especialidad al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5001/api/especialidades', nuevaEspecialidad);
-      console.log('Respuesta del backend:', response.data); // Verifica la respuesta
       setEspecialidades([...especialidades, response.data]);
       setModalOpen(false);
       setNuevaEspecialidad({
@@ -65,6 +69,7 @@ const Especialidades = () => {
     }
   };
 
+  // Eliminar una especialidad
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta especialidad?');
     if (confirmDelete) {
@@ -77,16 +82,20 @@ const Especialidades = () => {
     }
   };
 
+  // Manejar clic en editar especialidad
   const handleEditClick = (especialidad) => {
     setEspecialidadSeleccionada(especialidad);
     setEditModalOpen(true);
   };
 
+  // Manejar envío del formulario de edición
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:5001/api/especialidades/${especialidadSeleccionada.id}`, especialidadSeleccionada);
-      setEspecialidades(especialidades.map(especialidad => (especialidad.id === especialidadSeleccionada.id ? especialidadSeleccionada : especialidad)));
+      setEspecialidades(especialidades.map(especialidad => 
+        (especialidad.id === especialidadSeleccionada.id ? especialidadSeleccionada : especialidad)
+      ));
       setEditModalOpen(false);
       setEspecialidadSeleccionada(null);
     } catch (error) {
@@ -94,6 +103,7 @@ const Especialidades = () => {
     }
   };
 
+  // Manejar cambios en el formulario de edición
   const handleEditChange = (e) => {
     setEspecialidadSeleccionada({ ...especialidadSeleccionada, [e.target.name]: e.target.value });
   };
@@ -118,6 +128,7 @@ const Especialidades = () => {
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Fecha de Creación</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -127,6 +138,10 @@ const Especialidades = () => {
               <td>{especialidad.name}</td>
               <td>{especialidad.description || 'No especificado'}</td>
               <td>{new Date(especialidad.fecha_creacion).toLocaleDateString()}</td>
+              <td>
+                <button onClick={() => handleEditClick(especialidad)}>Editar</button>
+                <button onClick={() => handleDelete(especialidad.id)}>Eliminar</button>
+              </td>
             </tr>
           ))}
         </tbody>

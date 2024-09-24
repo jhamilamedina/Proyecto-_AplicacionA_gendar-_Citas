@@ -1,0 +1,75 @@
+/* Contenedor principal del perfil de usuario */
+.user-profile {
+  position: absolute; /* Para posicionar en la esquina */
+  top: 20px;
+  right: 20px; /* Posición en la esquina superior derecha */
+  z-index: 500; /* Asegura que se superponga a otros elementos */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-info {
+  background-color: #ffffff; /* Fondo blanco limpio */
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px; /* Espacio entre el texto y otros elementos */
+  transition: background-color 0.3s ease;
+}
+
+.user-info:hover {
+  background-color: #f0f0f0; /* Cambia el fondo al pasar el ratón */
+}
+
+/* Texto de bienvenida */
+.welcome-text {
+  font-size: 1.1rem;
+  font-family: 'Poppins', sans-serif; /* Tipografía moderna */
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Estilo del dropdown de cierre de sesión */
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Sombra para el dropdown */
+  padding: 10px;
+  min-width: 150px;
+  text-align: center;
+}
+
+.dropdown button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown button:hover {
+  background-color: #c0392b; /* Color más oscuro en hover */
+}
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .user-info {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+  }
+  
+  .dropdown {
+      top: 40px;
+  }
+}
