@@ -1,7 +1,6 @@
 body {
   background-color:#ddd
 }
-/* Contenedor de la tabla */
 .citas-container {
   padding: 20px;
 }
@@ -15,44 +14,44 @@ body {
 /* Estilo de las celdas de la tabla */
 .citas-table {
   width: 100%;
-  border-collapse: collapse; /* Elimina el espacio entre bordes */
+  border-collapse: collapse; 
   margin-top: 20px;
-  font-family: Arial, sans-serif; /* Establece una fuente más profesional */
+  font-family: Arial, sans-serif; 
 }
 
 .citas-table th, .citas-table td {
-  padding: 12px; /* Aumenta el espacio interior para una mejor legibilidad */
-  border: 1px solid #ddd; /* Color de borde más suave */
-  text-align: left; /* Alineación del texto a la izquierda */
+  padding: 12px; 
+  border: 1px solid #ddd; 
+  text-align: left;
 }
 
 .citas-table thead {
-  background-color: #678cb4; /* Fondo azul para el encabezado */
-  color: rgb(12, 1, 1); /* Color del texto del encabezado */
+  background-color: #678cb4; 
+  color: rgb(12, 1, 1);
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .citas-table th {
-  font-weight: bold; /* Acentúa el texto del encabezado */
+  font-weight: bold;
 }
 
 .citas-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9; /* Color de fondo alternado para las filas */
+  background-color: #f9f9f9; 
 }
 
 .citas-table tbody tr:hover {
-  background-color: #e9ecef; /* Color de fondo al pasar el cursor */
+  background-color: #e9ecef; 
 }
 
 .citas-table td {
-  font-size: 14px; /* Tamaño de fuente más pequeño para celdas */
+  font-size: 14px;
 }
 
 /* Estilos para los botones de acción en columna */
 .citas-table .action-buttons {
-  display: flex; /* Asegura que los botones estén en una columna */
-  flex-direction: column; /* Cambia la dirección a columna */
-  gap: 5px; /* Espacio entre los botones */
+  display: flex; 
+  flex-direction: column;
+  gap: 5px; 
 }
 
 .editar-btn {
@@ -62,9 +61,9 @@ body {
   color: white;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 12px; /* Tamaño de fuente más pequeño */
+  font-size: 12px; 
   text-align: center;
-  display: inline-block; /* Asegura que el botón sea un bloque en línea */
+  display: inline-block; 
 }
 .editar-btn1 {
   background-color: #ff3d07;
@@ -73,25 +72,25 @@ body {
   color: white;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 12px; /* Tamaño de fuente más pequeño */
+  font-size: 12px; 
   text-align: center;
-  display: inline-block; /* Asegura que el botón sea un bloque en línea */
+  display: inline-block;
 }
 
 /* Estilos adicionales para el botón Agregar cita */
 .agregar-cita {
   margin-bottom: 20px;
-  padding: 12px 20px; /* Ajustado para hacer el botón más pequeño */
+  padding: 12px 20px; 
   background-color: #217735;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px; /* Tamaño de fuente más pequeño */
-  text-align: center; /* Asegura que el texto esté centrado */
-  display: inline-block; /* Asegura que el botón tenga solo el ancho necesario */
-  width: auto; /* Ajusta el ancho al contenido */
-  min-width: 100px; /* Ajusta el ancho mínimo para que el botón no sea demasiado pequeño */
+  font-size: 14px; 
+  text-align: center;
+  display: inline-block; 
+  width: auto; 
+  min-width: 100px;
   float: left;
 }
 
@@ -107,9 +106,9 @@ body {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 100%; /* Ajusta el ancho al contenedor */
-  max-width: 400px; /* Ajusta el ancho máximo según tus necesidades */
-  font-size: 14px; /* Tamaño de fuente más pequeño */
+  width: 100%; 
+  max-width: 400px; 
+  font-size: 14px; 
 }
 
 .modal {
@@ -217,4 +216,45 @@ body {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
+}
+
+.ver-detalles-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.ver-detalles-btn:hover {
+  background-color: #0056b3;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: left;
+}
+
+.close {
+  color: rgb(74, 40, 159);
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
 }

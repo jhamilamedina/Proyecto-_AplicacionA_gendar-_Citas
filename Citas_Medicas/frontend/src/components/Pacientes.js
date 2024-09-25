@@ -18,7 +18,7 @@ const Pacientes = () => {
     direccion: '',
     historial_medico: '',
     dni: '',
-    user_id: '' // Agregar este campo
+    user_id: ''
   });
   const [currentPage, setCurrentPage] = useState(0);
   const pacientesPerPage = 5;
@@ -40,8 +40,10 @@ const Pacientes = () => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
+  // Fitro de busqueda por nombre y dni
   const filteredPacientes = pacientes.filter(paciente =>
-    paciente.nombre && paciente.nombre.toLowerCase().includes(searchTerm)
+    (paciente.nombre && paciente.nombre.toLowerCase().includes(searchTerm)) ||
+    (paciente.dni && paciente.dni.toLowerCase().includes(searchTerm))
   );
 
   const handlePageClick = (data) => {

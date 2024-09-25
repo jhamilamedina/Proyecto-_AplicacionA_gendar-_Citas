@@ -7,7 +7,7 @@ import Especialidades from './components/Especialidades';
 import Pacientes from './components/Pacientes';
 import Horarios from './components/Horarios';
 import Doctores from './components/Doctores';
-import UserProfile from './components/UserProfile'; // Importar el indicador de rol
+import UserProfile from './components/UserProfile';
 import Usuarios from './components/Usuarios';
 import Registro from './components/Registro';
 import DashboardUser from './components/DashboardUser';

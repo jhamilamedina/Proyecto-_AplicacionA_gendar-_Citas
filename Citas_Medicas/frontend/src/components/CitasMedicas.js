@@ -10,7 +10,8 @@ const CitasMedicas = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false); // Modal para editar
-  const [citaSeleccionada, setCitaSeleccionada] = useState(null); // Cita a editar
+  const [detailModalOpen, setDetailModalOpen] = useState(false); // Controlar el modal de detalles
+  const [citaSeleccionada, setCitaSeleccionada] = useState(null); // Cita a editar o ver detalles
   const [nuevaCita, setNuevaCita] = useState({
     fecha_cita: '',
     hora_cita: '',
@@ -89,11 +90,9 @@ const CitasMedicas = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos de la nueva cita:', nuevaCita); // Verifica los datos a enviar
     try {
       const response = await axios.post('http://localhost:5001/api/citas', nuevaCita);
-      console.log('Cita agregada:', response.data); // Verifica la respuesta
-      setCitas([...citas, response.data]); // Usa response.data para actualizar la lista
+      setCitas([...citas, response.data]);
       setModalOpen(false);
       setNuevaCita({
         fecha_cita: '',
@@ -123,6 +122,11 @@ const CitasMedicas = () => {
   const handleEditClick = (cita) => {
     setCitaSeleccionada(cita);
     setEditModalOpen(true);
+  };
+
+  const handleDetailClick = (cita) => {
+    setCitaSeleccionada(cita); // Se establece la cita seleccionada
+    setDetailModalOpen(true); // Abre el modal
   };
 
   const handleEditSubmit = async (e) => {
@@ -181,6 +185,7 @@ const CitasMedicas = () => {
                 <div className="action-buttons">
                   <button className="editar-btn" onClick={() => handleEditClick(cita)}>Editar</button>
                   <button className="eliminar-btn" onClick={() => handleDelete(cita.id)}>Eliminar</button>
+                  <button className="ver-detalles-btn" onClick={() => handleDetailClick(cita)}>Ver detalles</button>
                 </div>
               </td>
             </tr>
@@ -261,32 +266,34 @@ const CitasMedicas = () => {
               </label>
               <label>
                 Estado:
-                <input
-                  type="text"
+                <select
                   name="status"
                   value={nuevaCita.status}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Selecciona un estado</option>
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="Completada">Completada</option>
+                  <option value="Cancelada">Cancelada</option>
+                </select>
               </label>
               <label>
                 Razón:
-                <input
-                  type="text"
+                <textarea
                   name="razon"
                   value={nuevaCita.razon}
                   onChange={handleChange}
-                  required
                 />
               </label>
-              <button type="submit">Agregar</button>
+              <button type="submit">Agregar Cita</button>
             </form>
           </div>
         </div>
       )}
 
       {/* Modal para Editar Cita */}
-      {editModalOpen && citaSeleccionada && (
+      {editModalOpen && (
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => setEditModalOpen(false)}>&times;</span>
@@ -346,26 +353,47 @@ const CitasMedicas = () => {
               </label>
               <label>
                 Estado:
-                <input
-                  type="text"
+                <select
                   name="status"
                   value={citaSeleccionada.status}
                   onChange={handleEditChange}
                   required
-                />
+                >
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="Completada">Completada</option>
+                  <option value="Cancelada">Cancelada</option>
+                </select>
               </label>
               <label>
                 Razón:
-                <input
-                  type="text"
+                <textarea
                   name="razon"
                   value={citaSeleccionada.razon}
                   onChange={handleEditChange}
-                  required
                 />
               </label>
-              <button type="submit">Guardar cambios</button>
+              <button type="submit">Guardar Cambios</button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para Ver Detalles de la Cita */}
+      {detailModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setDetailModalOpen(false)}>&times;</span>
+            <h2>Detalles de la Cita</h2>
+            {citaSeleccionada && (
+              <div>
+                <p><strong>Fecha Cita:</strong> {citaSeleccionada.fecha_cita}</p>
+                <p><strong>Hora:</strong> {citaSeleccionada.hora_cita}</p>
+                <p><strong>Paciente:</strong> {pacienteMap[citaSeleccionada.patient_id]}</p>
+                <p><strong>Doctor:</strong> {doctorMap[citaSeleccionada.doctor_id]}</p>
+                <p><strong>Estado:</strong> {citaSeleccionada.status}</p>
+                <p><strong>Razón:</strong> {citaSeleccionada.razon || 'No especificado'}</p>
+              </div>
+            )}
           </div>
         </div>
       )}
