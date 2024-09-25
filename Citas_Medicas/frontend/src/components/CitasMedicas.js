@@ -12,6 +12,7 @@ const CitasMedicas = () => {
   const [editModalOpen, setEditModalOpen] = useState(false); // Modal para editar
   const [detailModalOpen, setDetailModalOpen] = useState(false); // Controlar el modal de detalles
   const [citaSeleccionada, setCitaSeleccionada] = useState(null); // Cita a editar o ver detalles
+
   const [nuevaCita, setNuevaCita] = useState({
     fecha_cita: '',
     hora_cita: '',
@@ -57,12 +58,12 @@ const CitasMedicas = () => {
   }, []);
 
   const pacienteMap = pacientes.reduce((map, paciente) => {
-    map[paciente.id] = `${paciente.nombre} ${paciente.apellido}`;
+    map[paciente.id] = `${paciente.nombre} ${paciente.apellido}`; // Cambiar comillas simples por backticks para concatenación
     return map;
   }, {});
-
+  
   const doctorMap = doctores.reduce((map, doctor) => {
-    map[doctor.id] = `${doctor.first_name} ${doctor.last_name}`;
+    map[doctor.id] = `${doctor.first_name} ${doctor.last_name}`; // Usar backticks aquí también
     return map;
   }, {});
 
@@ -90,9 +91,11 @@ const CitasMedicas = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Datos de la nueva cita:', nuevaCita); // Verifica los datos a enviar
     try {
       const response = await axios.post('http://localhost:5001/api/citas', nuevaCita);
-      setCitas([...citas, response.data]);
+      console.log('Cita agregada:', response.data); // Verifica la respuesta
+      setCitas([...citas, response.data]); // Usa response.data para actualizar la lista
       setModalOpen(false);
       setNuevaCita({
         fecha_cita: '',
@@ -111,7 +114,7 @@ const CitasMedicas = () => {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta cita?');
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:5001/api/citas/${id}`);
+        await axios.delete('http://localhost:5001/api/citas/${id}');
         setCitas(citas.filter(cita => cita.id !== id));
       } catch (error) {
         console.error('Error al eliminar la cita:', error);
@@ -182,7 +185,7 @@ const CitasMedicas = () => {
               <td>{cita.status}</td>
               <td>{cita.razon || 'No especificado'}</td>
               <td>
-                <div className="action-buttons">
+              <div className="action-buttons">
                   <button className="editar-btn" onClick={() => handleEditClick(cita)}>Editar</button>
                   <button className="eliminar-btn" onClick={() => handleDelete(cita.id)}>Eliminar</button>
                   <button className="ver-detalles-btn" onClick={() => handleDetailClick(cita)}>Ver detalles</button>
@@ -266,34 +269,32 @@ const CitasMedicas = () => {
               </label>
               <label>
                 Estado:
-                <select
+                <input
+                  type="text"
                   name="status"
                   value={nuevaCita.status}
                   onChange={handleChange}
                   required
-                >
-                  <option value="">Selecciona un estado</option>
-                  <option value="Pendiente">Pendiente</option>
-                  <option value="Completada">Completada</option>
-                  <option value="Cancelada">Cancelada</option>
-                </select>
+                />
               </label>
               <label>
                 Razón:
-                <textarea
+                <input
+                  type="text"
                   name="razon"
                   value={nuevaCita.razon}
                   onChange={handleChange}
+                  required
                 />
               </label>
-              <button type="submit">Agregar Cita</button>
+              <button type="submit">Agregar</button>
             </form>
           </div>
         </div>
       )}
 
       {/* Modal para Editar Cita */}
-      {editModalOpen && (
+      {editModalOpen && citaSeleccionada && (
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => setEditModalOpen(false)}>&times;</span>
@@ -353,26 +354,25 @@ const CitasMedicas = () => {
               </label>
               <label>
                 Estado:
-                <select
+                <input
+                  type="text"
                   name="status"
                   value={citaSeleccionada.status}
                   onChange={handleEditChange}
                   required
-                >
-                  <option value="Pendiente">Pendiente</option>
-                  <option value="Completada">Completada</option>
-                  <option value="Cancelada">Cancelada</option>
-                </select>
+                />
               </label>
               <label>
                 Razón:
-                <textarea
+                <input
+                  type="text"
                   name="razon"
                   value={citaSeleccionada.razon}
                   onChange={handleEditChange}
+                  required
                 />
               </label>
-              <button type="submit">Guardar Cambios</button>
+              <button type="submit">Guardar cambios</button>
             </form>
           </div>
         </div>
